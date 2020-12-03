@@ -1,5 +1,5 @@
 const test = require("tape");
-const duration = require("../dist/index.js");
+const duration = require("../dist/index.cjs.js");
 const parse = duration.parse;
 const serialize = duration.serialize;
 
