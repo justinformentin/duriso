@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <script src="../dist/index.umd.js"></script>
+  </head>
+  <body>
+    <div>
+      <h3>Serialized</h3>
+      <div id="serialized"></div>
+    </div>
+    <div>
+      <h3>Parsed</h3>
+      <div id="ms"></div>
+      <p>Duration:</p>
+      <ul id="parsed"></ul>
+    </div>
+  </body>
+  <script>
+    const parse = duriso.parse;
+    const serialize = duriso.serialize;
+    const durStr = "P3Y6M2W4DT12H30M5S";
+    const durObj = {
+      years: "3",
+  months: "6",
+  weeks: "2",
+  days: "4",
+  hours: "12",
+  minutes: "30",
+  seconds: "5",
+    };
+
+    document.querySelector("#serialized").innerHTML = serialize(durObj);
+
+    const parsed = parse(durStr);
+    const ms = document.querySelector("#ms");
+    ms.innerHTML = "Millisecond: " + parsed.ms;
+
+    const p = document.querySelector("#parsed");
+    Object.keys(parsed.duration).forEach((key) => {
+      if (Number(parsed.duration[key])) {
+        const li = document.createElement("li");
+        li.innerHTML = `${key}: ${parsed.duration[key]}`;
+        p.appendChild(li);
+      }
+    });
+  </script>
+</html>
