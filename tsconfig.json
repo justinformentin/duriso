@@ -5,7 +5,7 @@
     "target": "es2018",
     "module": "esnext",
     "strict": true,
-    "outDir": "dist",
+    "outDir": "lib",
     "sourceMap": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
