@@ -1,6 +1,6 @@
 {
   "name": "duriso",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Parse and serialize ISO 8601 Durations",
   "main": "dist/index.esm.js",
   "scripts": {
