@@ -13,6 +13,10 @@
     "name": "Justin Formentin",
     "email": "talktojustintoday@gmail.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/justinformentin/duriso.git"
+  },
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.12.9",
