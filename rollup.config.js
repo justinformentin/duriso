@@ -16,6 +16,11 @@ const outputs = (format) => ({
   file: `dist/index.${format}.js`,
 });
 
+const defaultBabel = () =>
+  babel({
+    exclude: "node_modules/**",
+  });
+
 export default [
   {
     input,
@@ -24,21 +29,16 @@ export default [
       ...outputs("umd"),
       exports: "named",
     },
-    plugins: [...commonPlugins],
+    plugins: [...commonPlugins, defaultBabel()],
   },
   {
     input,
     output: outputs("cjs"),
-    plugins: [...commonPlugins],
+    plugins: [...commonPlugins, defaultBabel()],
   },
   {
     input,
     output: outputs("esm"),
-    plugins: [
-      ...commonPlugins,
-      babel({
-        exclude: ["node_modules"],
-      }),
-    ],
+    plugins: [...commonPlugins],
   },
 ];
