@@ -1,12 +1,28 @@
 # Duriso
 
-A 1KB package for parsing and serializing [ISO 8601 Duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) strings.
+A lightweight, 658 byte package for parsing and serializing [ISO 8601 Duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) strings.
 
-This package is just for some quick, unimportant conversions. Never use random packages you find on NPM for mission critical time/date conversions.
+## Installation
+
+```bash
+npm install duriso
+```
 
 ## Usage
 
-### UMD
+### ES Modules (Recommended)
+
+```js
+import { serialize, parse } from "duriso";
+```
+
+### CommonJS
+
+```js
+const { serialize, parse } = require("duriso/index.cjs.js");
+```
+
+### UMD (Browser)
 
 ```html
 <script src="https://unpkg.com/duriso/index.umd.js"></script>
@@ -15,100 +31,112 @@ This package is just for some quick, unimportant conversions. Never use random p
 </script>
 ```
 
-### CJS
+## API Reference
 
-```js
-const duriso = require("duriso/index.cjs.js");
-const { serialize, parse } = duriso;
+### parse(durationString)
+
+Parses an ISO 8601 duration string into a duration object.
+
+**Parameters:**
+- `durationString` (string): An ISO 8601 formatted duration string
+
+**Returns:**
+```typescript
+{
+  duration: {
+    years?: number,
+    months?: number,
+    weeks?: number,
+    days?: number,
+    hours?: number,
+    minutes?: number,
+    seconds?: number
+  }
+}
 ```
 
-### ESM
+### serialize(durationObject)
 
-```js
-import { serialize, parse } from "duriso";
+Serializes a duration object into an ISO 8601 duration string.
+
+**Parameters:**
+```typescript
+{
+  years?: number,
+  months?: number,
+  weeks?: number,
+  days?: number,
+  hours?: number,
+  minutes?: number,
+  seconds?: number
+}
 ```
+
+**Returns:**
+- (string): An ISO 8601 formatted duration string
 
 ## Examples
 
+### Serializing Duration Objects
+
 ```js
-const fullDurationStr = "P3Y6M2W4DT12H30M5S";
+import { serialize } from "duriso";
 
-const semiDurationStr = "PT12H30M5S";
-
-const fullDurationObj = {
-  years: "3",
-  months: "6",
-  weeks: "2",
-  days: "4",
-  hours: "12",
-  minutes: "30",
-  seconds: "5",
+// Full duration with all components
+const fullDuration = {
+  years: 3,
+  months: 6,
+  weeks: 2,
+  days: 4,
+  hours: 12,
+  minutes: 30,
+  seconds: 5
 };
 
-const semiDurationObj = {
-  hours: "12",
-  minutes: "30",
-  seconds: "5",
+console.log(serialize(fullDuration));
+// Output: "P3Y6M2W4DT12H30M5S"
+
+// Time-only duration
+const timeDuration = {
+  hours: 12,
+  minutes: 30,
+  seconds: 5
 };
 
-const serializedSemi = serialize(semiDurationObj);
-// PT12H30M5S
-
-const serializedFull = serialize(fullDurationObj);
-// P3Y6M2W4DT12H30M5S
-
-const parsedSemi = parse(durationString);
-// {
-//    ms: 45005000,
-//    duration: {
-//      hours: 12
-//      minutes: 30
-//      seconds: 5
-//    }
-// }
-
-const parsedFull = parse(durationString);
-// {
-//    ms: 110464205000,
-//    duration: {
-//      years: 3
-//      months: 6
-//      weeks: 2
-//      days: 4
-//      hours: 12
-//      minutes: 30
-//      seconds: 5
-//    }
-// }
+console.log(serialize(timeDuration));
+// Output: "PT12H30M5S"
 ```
 
-## Parse
+### Parsing Duration Strings
 
-parse(string): {
-  ms: number,
-  duration: {
-    years?: string;
-    months?: string;
-    weeks?: string;
-    days?: string;
-    hours?: string;
-    minutes?: string;
-    seconds?: string;
-  }
-}
+```js
+import { parse } from "duriso";
 
-## Serialize
+// Parse a full duration string
+const fullParsed = parse("P3Y6M2W4DT12H30M5S");
+console.log(fullParsed);
+// Output:
+// {
+//   duration: {
+//     years: 3,
+//     months: 6,
+//     weeks: 2,
+//     days: 4,
+//     hours: 12,
+//     minutes: 30,
+//     seconds: 5
+//   }
+// }
 
-serialize({
-  years?: string;
-  months?: string;
-  weeks?: string;
-  days?: string;
-  hours?: string;
-  minutes?: string;
-  seconds?: string;
-}): string
-
-## Warning
-
-The millisecond conversion for `months` and `years` is inaccurate because the conversion is assuming 30 days in a month.
+// Parse a time-only duration string
+const timeParsed = parse("PT12H30M5S");
+console.log(timeParsed);
+// Output:
+// {
+//   duration: {
+//     hours: 12,
+//     minutes: 30,
+//     seconds: 5
+//   }
+// }
+```
