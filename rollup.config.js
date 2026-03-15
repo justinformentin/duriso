@@ -1,6 +1,7 @@
-import babel from "rollup-plugin-babel";
-import resolve from "rollup-plugin-node-resolve";
-import commonjs from "rollup-plugin-commonjs";
+import babel from "@rollup/plugin-babel";
+import resolve from "@rollup/plugin-node-resolve";
+import commonjs from "@rollup/plugin-commonjs";
+import terser from "@rollup/plugin-terser";
 
 const input = "lib/index.js";
 
@@ -11,14 +12,22 @@ const commonPlugins = [
   commonjs(),
 ];
 
-const outputs = (format) => ({
-  format,
-  file: `dist/index.${format}.js`,
-});
+const outputs = (format) => {
+  const extensions = {
+    cjs: '.cjs',
+    esm: '.js',
+    umd: '.umd.js'
+  };
+  return {
+    format,
+    file: `dist/index${extensions[format]}`,
+  };
+};
 
 const defaultBabel = () =>
   babel({
     exclude: "node_modules/**",
+    babelHelpers: "bundled",
   });
 
 export default [
@@ -29,16 +38,16 @@ export default [
       ...outputs("umd"),
       exports: "named",
     },
-    plugins: [...commonPlugins, defaultBabel()],
+    plugins: [...commonPlugins, defaultBabel(), terser()],
   },
   {
     input,
     output: outputs("cjs"),
-    plugins: [...commonPlugins, defaultBabel()],
+    plugins: [...commonPlugins, defaultBabel(), terser()],
   },
   {
     input,
     output: outputs("esm"),
-    plugins: [...commonPlugins],
+    plugins: [...commonPlugins, terser()],
   },
 ];
